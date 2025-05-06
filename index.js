@@ -1,29 +1,31 @@
-const express = require("express");
 require("dotenv").config();
+const express = require("express");
+const connectDB = require("./connect");
+const authRoutes = require("./routes/authRoutes");
+const productRoutes = require("./routes/products");
 
 const app = express();
-const connectDB = require("./connect");
 
-const cors = require("cors");
-
-const router = require("./routes/products");
-
-app.use(cors());
-//initiate a middleware
+// Middleware
 app.use(express.json());
 
-app.use("/api/products", router);
+// Database Connection
+connectDB(process.env.DB);
 
-//start the server if only the connection of the database succeeded
-const start = async () => {
-  try {
-    await connectDB(process.env.DB);
-    app.listen(process.env.PORT, () => {
-      console.log("server started");
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
 
-start();
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    status: "error",
+    message: "Something went wrong!",
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
