@@ -1,33 +1,45 @@
-const express = require("express");
 require("dotenv").config();
-
-const app = express();
-const connectDB = require("./connect");
-
+const express = require("express");
 const cors = require("cors");
 
-const router = require("./routes/products");
-const router2 = require("./routes/users");
+const connectDB = require("./connect");
+const authRoutes = require("./routes/authRoutes");
+const productRoutes = require("./routes/products");
+const userRoutes = require("./routes/users");
 
+const app = express();
+
+// Middleware
 app.use(cors());
-//initiate a middleware
 app.use(express.json());
 
-app.use("/api/products", router);
-app.use("/api/users", router2);
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
-//start the server if only the connection of the database succeeded
-// const start = async () => {
-//   try {
-//     await connectDB(process.env.DB);
-//     app.listen(process.env.PORT, () => {
-//       console.log("server started");
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    status: "error",
+    message: "Something went wrong!",
+  });
+});
 
-// start();
+// Start the server if DB connection succeeds
+const PORT = process.env.PORT || 3000;
+const start = async () => {
+  try {
+    await connectDB(process.env.DB);
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Failed to connect to DB:", err);
+  }
+};
+
+start();
 
 module.exports = app;
