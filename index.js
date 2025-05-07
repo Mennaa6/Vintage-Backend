@@ -15,15 +15,17 @@ app.use(express.json());
 app.use("/api/products", router);
 
 //start the server if only the connection of the database succeeded
-const start = async () => {
-  try {
-    await connectDB(process.env.DB);
-    app.listen(process.env.PORT, () => {
-      console.log("server started");
-    });
-  } catch (err) {
-    console.log(err);
-  }
-};
+// const start = async () => {
+//   try {
+//     await connectDB(process.env.DB);
+//     app.listen(process.env.PORT, () => {
+//       console.log("server started");
+//     });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
-start();
+// start();
+
+module.exports = app;
