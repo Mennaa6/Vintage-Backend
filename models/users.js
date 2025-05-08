@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
         },
       ],
     wishlist: [{ type: mongoose.Schema.Types.ObjectId,  ref: "products" }],
-    // orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "orders"}],
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "orders"}],
     createdAt: {
         type: Date,
         default: Date.now
