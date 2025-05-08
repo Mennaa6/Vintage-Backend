@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require("../models/product")
 const bcrypt = require("bcrypt");
 
 
@@ -24,14 +25,14 @@ const userSchema = new mongoose.Schema({
     },
     cartItems: [
         {
-          productId: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
+          productId: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
             quantity: {
                 type: Number,
                 default: 1
             }
         },
       ],
-    wishlist: [{ type: mongoose.Schema.Types.ObjectId,  ref: "products" }],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId,  ref: "product" }],
     orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "orders"}],
     createdAt: {
         type: Date,
