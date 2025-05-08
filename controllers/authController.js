@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/users");
 const jwt = require("jsonwebtoken");
 
 const createToken = (userId, role) => {
@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
       user: {
         id: newUser._id,
         name: newUser.name,
-        mail: newUser.mail,
+        mail: newUser.email,
         role: newUser.role,
       },
     });
@@ -38,16 +38,16 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { mail, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!mail || !password) {
+    if (!email || !password) {
       return res.status(400).json({
         status: "fail",
         message: "Please provide mail and password",
       });
     }
 
-    const user = await User.findOne({ mail }).select("+password");
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({
@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        mail: user.mail,
+        mail: user.email,
         role: user.role,
       },
     });
