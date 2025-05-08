@@ -11,7 +11,7 @@ exports.signup = async (req, res) => {
   try {
     const newUser = await User.create({
       name: req.body.name,
-      mail: req.body.mail,
+      email: req.body.mail,
       password: req.body.password,
       role: req.body.role || "user", // Only allow "user" from frontend
     });
@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
       user: {
         id: newUser._id,
         name: newUser.name,
-        mail: newUser.email,
+        email: newUser.email,
         role: newUser.role,
       },
     });
@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
       user: {
         id: user._id,
         name: user.name,
-        mail: user.email,
+        email: user.email,
         role: user.role,
       },
     });
