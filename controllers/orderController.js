@@ -1,4 +1,4 @@
-const Order = require("../models/Order");
+const Order = require("../models/orders");
 const User = require("../models/users");
 
 // CREATE a new order and link it to a user
